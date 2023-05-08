@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"stjean2016.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="题目链接： http:&#x2F;&#x2F;acm.hdu.edu.cn&#x2F;showproblem.php?pid&#x3D;5572 题目大意： 有一个无体积的球，近似为质点，一开始给出球的初始位置和运动方向（为从原点到给出点的向量方向），同时平面中有一个圆柱体，给出圆心位置和半径，若球撞击圆柱体，则产生以撞击点切线为反射面的无损反弹，求问球是否会经过给定的P点 分析： 大体上可以分成两类情况，球会撞击圆柱或者不会撞击圆柱">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HDU  5572-An Easy Physics Problem （计算几何）">
+<meta property="og:url" content="https://stjean2016.github.io/2018/10/25/HDU%20%205572-An%20Easy%20Physics%20Problem%20%EF%BC%88%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95%EF%BC%89/index.html">
+<meta property="og:site_name" content="JS&#39;s Blog">
+<meta property="og:description" content="题目链接： http:&#x2F;&#x2F;acm.hdu.edu.cn&#x2F;showproblem.php?pid&#x3D;5572 题目大意： 有一个无体积的球，近似为质点，一开始给出球的初始位置和运动方向（为从原点到给出点的向量方向），同时平面中有一个圆柱体，给出圆心位置和半径，若球撞击圆柱体，则产生以撞击点切线为反射面的无损反弹，求问球是否会经过给定的P点 分析： 大体上可以分成两类情况，球会撞击圆柱或者不会撞击圆柱">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-10-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-08T07:56:44.857Z">
+<meta property="article:author" content="Jian Sheng">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://stjean2016.github.io/2018/10/25/HDU%20%205572-An%20Easy%20Physics%20Problem%20%EF%BC%88%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>HDU  5572-An Easy Physics Problem （计算几何） | JS's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">JS's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://stjean2016.github.io/2018/10/25/HDU%20%205572-An%20Easy%20Physics%20Problem%20%EF%BC%88%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jian Sheng">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JS's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HDU  5572-An Easy Physics Problem （计算几何）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-10-25 00:00:00" itemprop="dateCreated datePublished" datetime="2018-10-25T00:00:00+08:00">2018-10-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-05-08 15:56:44" itemprop="dateModified" datetime="2023-05-08T15:56:44+08:00">2023-05-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/%E5%88%B7%E9%A2%98/" itemprop="url" rel="index"><span itemprop="name">刷题</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><strong>题目链接：</strong><br />
+<a target="_blank" rel="noopener" href="http://acm.hdu.edu.cn/showproblem.php?pid=5572">http://acm.hdu.edu.cn/showproblem.php?pid=5572</a></p>
+<p><strong>题目大意：</strong><br />
+有一个无体积的球，近似为质点，一开始给出球的初始位置和运动方向（为从原点到给出点的向量方向），同时平面中有一个圆柱体，给出圆心位置和半径，若球撞击圆柱体，则产生以撞击点切线为反射面的无损反弹，求问球是否会经过给定的P点</p>
+<p><strong>分析：</strong><br />
+大体上可以分成两类情况，球会撞击圆柱或者不会撞击圆柱<br />
+球什么情况下会撞击圆柱呢</p>
+<ul>
+<li>球的运动轨迹与圆柱体有交点</li>
+<li>交点为两个，一个为与圆相切，不发生撞击</li>
+<li>圆柱体在球的初始位置的前进方向上，而不是后方</li>
+</ul>
+<p>如果球未撞击圆柱，只有一种可能，点处于球的运动轨迹前方，即一条射线上，而球撞击圆柱则有两种可能</p>
+<ul>
+<li>球在初始位置和撞击点（与初始位置较近的一个交点）经过P点</li>
+<li>球在反弹后，在撞击点的前方射线经过P点</li>
+</ul>
+<p>理清楚这几种可能后，直接上计算几何板子，调一下方法即可</p>
+<p><strong>代码：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;bits/stdc++.h&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">const double PI = acos(-1);</span><br><span class="line"></span><br><span class="line">bool ok;</span><br><span class="line">double ox, oy, r;</span><br><span class="line">double px, py;</span><br><span class="line">double vx, vy;</span><br><span class="line">double tx, ty;</span><br><span class="line">double xta1, xta2, xta3, xta4;</span><br><span class="line"></span><br><span class="line">const double eps = 1e-7;</span><br><span class="line">const double inf = 1e20;</span><br><span class="line">const double pi = acos(-1.0);</span><br><span class="line">const int maxp = 1010;</span><br><span class="line"></span><br><span class="line">int sgn(double x)&#123;</span><br><span class="line">    if (fabs(x)&lt;eps) return 0;</span><br><span class="line">    if (x&lt;0) return -1;</span><br><span class="line">    else return 1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">inline double sqr(double x)</span><br><span class="line">&#123;</span><br><span class="line">    return x*x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Point&#123;</span><br><span class="line">    double x,y;</span><br><span class="line">    Point()&#123;&#125;</span><br><span class="line">    Point(double _x,double _y)&#123;</span><br><span class="line">        x = _x;</span><br><span class="line">        y = _y;</span><br><span class="line">    &#125;</span><br><span class="line">    void input()&#123;</span><br><span class="line">        scanf(&quot;%lf%lf&quot;,&amp;x,&amp;y);</span><br><span class="line">    &#125;</span><br><span class="line">    void output()&#123;</span><br><span class="line">        printf(&quot;%2.f,%.2f\n&quot;,x,y);</span><br><span class="line">    &#125;</span><br><span class="line">    bool operator == (Point b)const&#123;</span><br><span class="line">        return sgn(x-b.x)==0&amp;&amp; sgn(y-b.y)==0;</span><br><span class="line">    &#125;</span><br><span class="line">    bool operator &lt; (Point b)const&#123;</span><br><span class="line">        return sgn(x-b.x)==0?sgn(y-b.y)&lt;0:x&lt;b.x;</span><br><span class="line">    &#125;</span><br><span class="line">    Point operator - (const Point &amp; b)const&#123;</span><br><span class="line">        return Point(x-b.x,y-b.y);</span><br><span class="line">    &#125;</span><br><span class="line">    //叉积</span><br><span class="line">    double operator ^ (const Point &amp;b)const&#123;</span><br><span class="line">        return x*b.y-y*b.x;</span><br><span class="line">    &#125;</span><br><span class="line">    //点积</span><br><span class="line">    double operator * (const Point &amp;b)const&#123;</span><br><span class="line">        return x*b.x + y*b.y;</span><br><span class="line">    &#125;</span><br><span class="line">    double len()</span><br><span class="line">    &#123;</span><br><span class="line">        return hypot(x,y);</span><br><span class="line">    &#125;</span><br><span class="line">    double len2()</span><br><span class="line">    &#123;</span><br><span class="line">        return x*x+y*y;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    double distance(Point p)</span><br><span class="line">    &#123;</span><br><span class="line">        return hypot(x-p.x,y-p.y);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Point operator + (const Point &amp; b) const</span><br><span class="line">    &#123;</span><br><span class="line">        return Point(x+b.x,y+b.y);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Point operator *(const double&amp; k)const&#123;</span><br><span class="line">        return Point(x*k,y*k);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Point operator / (const double &amp;k) const&#123;</span><br><span class="line">        return Point(x/k,y/k);</span><br><span class="line">    &#125;</span><br><span class="line">    double rad(Point a,Point b)</span><br><span class="line">    &#123;</span><br><span class="line">        Point p = *this;</span><br><span class="line">        return fabs(atan2 (fabs((a-p)^(b-p)),(a-p)*(b-p)));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Point trunc(double r)</span><br><span class="line">    &#123;</span><br><span class="line">        double l = len();</span><br><span class="line">        if (!sgn(l)) return *this;</span><br><span class="line">        r /=l ;</span><br><span class="line">        return Point (x*r,y*r);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Point rotleft()&#123;</span><br><span class="line">        return Point(-y,x);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Point rotright()&#123;</span><br><span class="line">        return Point(y,-x);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Point rotate(Point p,double angle)</span><br><span class="line">    &#123;</span><br><span class="line">        Point v = (*this) - p;</span><br><span class="line">        double c = cos(angle) , s = sin(angle);</span><br><span class="line">        return Point(p.x+v.x*c - v.y*s,p.y+v.x*s + v.y*c);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct Line&#123;</span><br><span class="line">    Point s,e;</span><br><span class="line">    Line()&#123;&#125;</span><br><span class="line">    Line(Point _s,Point _e)</span><br><span class="line">    &#123;</span><br><span class="line">        s = _s;</span><br><span class="line">        e = _e;</span><br><span class="line">    &#125;</span><br><span class="line">    bool operator == (Line v)</span><br><span class="line">    &#123;</span><br><span class="line">        return (s==v.s)&amp;&amp;(e==v.e);</span><br><span class="line">    &#125;</span><br><span class="line">    Line (Point p,double angle)</span><br><span class="line">    &#123;</span><br><span class="line">        s = p;</span><br><span class="line">        if (sgn(angle - pi/2) == 0)</span><br><span class="line">        &#123;</span><br><span class="line">            e = (s + Point(0,1));</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">            e = (s +Point(1,tan(angle)));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Line (double a,double b,double c)</span><br><span class="line">    &#123;</span><br><span class="line">        if (sgn(a)==0)</span><br><span class="line">        &#123;</span><br><span class="line">            s = Point(0,-c/b);</span><br><span class="line">            e = Point(1,-c/b);</span><br><span class="line">        &#125;</span><br><span class="line">        else if (sgn(b)==0)</span><br><span class="line">        &#123;</span><br><span class="line">            s = Point(-c/a,0);</span><br><span class="line">            e = Point(-c/a,1);</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            s = Point(0,-c/b);</span><br><span class="line">            s = Point(1,(-c-a)/b);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    void input()</span><br><span class="line">    &#123;</span><br><span class="line">        s.input();</span><br><span class="line">        e.input();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    void adjust()</span><br><span class="line">    &#123;</span><br><span class="line">        if (e&lt;s) swap(s,e);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    double length()</span><br><span class="line">    &#123;</span><br><span class="line">        return s.distance(e);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    double angle()&#123;</span><br><span class="line">        double k = atan2(e.y-s.y,e.x-s.x);</span><br><span class="line">        if (sgn(k)&lt;0) k+= pi;</span><br><span class="line">        if (sgn(k-pi)==0) k -= pi;</span><br><span class="line">        return k;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int relation(Point p)</span><br><span class="line">    &#123;</span><br><span class="line">        int c = sgn((p-s)^(e-s));</span><br><span class="line">        if (c&lt;0) return 1;</span><br><span class="line">        else if (c&gt;0) return 2;</span><br><span class="line">        else return 3;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    bool pointonseg(Point p)</span><br><span class="line">    &#123;</span><br><span class="line">        return sgn((p-s)^(e-s)) ==0 &amp;&amp;sgn((p-s)*(p-e))&lt;=0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    bool parallel(Line v)</span><br><span class="line">    &#123;</span><br><span class="line">        return sgn((e-s)^(v.e-v.s)) ==0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int segcrossseg(Line v)</span><br><span class="line">    &#123;</span><br><span class="line">        int d1 = sgn((e-s)^(v.s-s));</span><br><span class="line">        int d2 = sgn((e-s)^(v.e-s));</span><br><span class="line">        int d3 = sgn((v.e-v.s)^(s-v.s));</span><br><span class="line">        int d4 = sgn((v.e-v.s)^(e-v.s));</span><br><span class="line">        if ((d1^d2) ==-2 &amp;&amp; (d3^d4)==-2 ) return 2;</span><br><span class="line">        return (d1==0&amp;&amp; sgn((v.s-s)*(v.s-e))&lt;=0)||</span><br><span class="line">        (d2 ==0 &amp;&amp; sgn((v.e-s)*(v.e-e))&lt;=0)||</span><br><span class="line">        (d3 ==0 &amp;&amp; sgn((s-v.s)*(s-v.e))&lt;=0)||</span><br><span class="line">        (d4 ==0 &amp;&amp; sgn((e-v.s)*(e-v.e))&lt;=0);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Point crosspoint(Line v)</span><br><span class="line">    &#123;</span><br><span class="line">        double a1 = (v.e-v.s)^(s-v.s);</span><br><span class="line">        double a2 = (v.e-v.s)^(e-v.s);</span><br><span class="line">        return Point((s.x*a2-e.x*a1)/(a2-a1),(s.y*a2-e.y*a1)/(a2-a1));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    double dispointtoline(Point p)</span><br><span class="line">    &#123;</span><br><span class="line">        return fabs((p-s)^(e-s))/length();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    double dispointtoseg(Point p)</span><br><span class="line">    &#123;</span><br><span class="line">        if (sgn((p-s)*(e-s))&lt;0|| sgn((p-e)*(s-e))&lt;0)</span><br><span class="line">            return min(p.distance(s),p.distance(e));</span><br><span class="line">        return dispointtoline(p);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Point symmetrypoint(Point p)</span><br><span class="line">    &#123;</span><br><span class="line">    	Point q = lineprog(p);</span><br><span class="line">    	return Point(2*q.x-p.x,2*q.y-p.y);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Point lineprog(Point p)</span><br><span class="line">    &#123;</span><br><span class="line">        return s + ( ((e-s)*((e-s)*(p-s)))/((e-s).len2()));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">struct circle&#123;</span><br><span class="line">    Point p;</span><br><span class="line">    double r;</span><br><span class="line">    circle() &#123;&#125;</span><br><span class="line">    circle(Point _p , double _r)</span><br><span class="line">    &#123;</span><br><span class="line">        p = _p;</span><br><span class="line">        r = _r;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    circle(Point a, Point b, Point c)</span><br><span class="line">    &#123;</span><br><span class="line">        Line u = Line((a+b)/2,((a+b)/2)+((b-a).rotleft()));</span><br><span class="line">        Line v = Line((b+c)/2,((b+c)/2)+((c-b).rotleft()));</span><br><span class="line">        p = u.crosspoint(v);</span><br><span class="line">        r = p.distance(a);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    void input()</span><br><span class="line">    &#123;</span><br><span class="line">        p.input();</span><br><span class="line">        scanf(&quot;%lf&quot;,&amp;r);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    void output()</span><br><span class="line">    &#123;</span><br><span class="line">        printf(&quot;%.2f,%.2f,%.2f\n&quot;,p.x,p.y,r);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    bool operator == (circle v)</span><br><span class="line">    &#123;</span><br><span class="line">        return (p==v.p)&amp;&amp;sgn(r-v.r)==0;</span><br><span class="line">    &#125;</span><br><span class="line">    bool operator &lt; (circle v)const</span><br><span class="line">    &#123;</span><br><span class="line">        return ((p&lt;v.p)||((p==v.p)&amp;&amp;sgn(r-v.r)&lt;0));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    double area()</span><br><span class="line">    &#123;</span><br><span class="line">        return pi*r*r;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    double circumference()</span><br><span class="line">    &#123;</span><br><span class="line">        return 2*pi*r;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int relation(Point b)</span><br><span class="line">    &#123;</span><br><span class="line">        double dst = b.distance(p);</span><br><span class="line">        if (sgn(dst-r)&lt;0) return 2;</span><br><span class="line">        else if (sgn(dst-r)==0) return 1;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int relationseg(Line v)</span><br><span class="line">    &#123;</span><br><span class="line">        double dst = v.dispointtoseg(p);</span><br><span class="line">        if (sgn(dst-r) &lt; 0) return 2;</span><br><span class="line">        else if (sgn(dst -r) ==0) return 1;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int relationline (Line v)</span><br><span class="line">    &#123;</span><br><span class="line">        double dst = v.dispointtoline(p);</span><br><span class="line">        if (sgn(dst-r)&lt;0) return 2;</span><br><span class="line">        else if (sgn(dst-r)==0) return 1;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int relationcircle(circle v)</span><br><span class="line">    &#123;</span><br><span class="line">        double d = p.distance(v.p);</span><br><span class="line">        if (sgn(d-r-v.r)&gt;0) return 5;</span><br><span class="line">        if (sgn(d-r-v.r)==0) return 4;</span><br><span class="line">        double l = fabs(r-v.r);</span><br><span class="line">        if (sgn(d-r-v.r)&lt;0 &amp;&amp; sgn(d-l)&gt;0) return 3;</span><br><span class="line">        if (sgn(d-l) ==0 ) return 2;</span><br><span class="line">        if (sgn(d-l)&lt; 0) return 1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int pointcrosscircle(circle v,Point&amp; p1,Point&amp; p2)</span><br><span class="line">    &#123;</span><br><span class="line">        int rel = relationcircle(v);</span><br><span class="line">        if (rel==1 || rel==5) return 0;</span><br><span class="line">        double d = p.distance(v.p);</span><br><span class="line">        double l = (d*d+r*r-v.r*v.r)/(2*d);</span><br><span class="line">        double h = sqrt(r*r-l*l);</span><br><span class="line">        Point tmp = p+ (v.p-p).trunc(l);</span><br><span class="line">        p1 = tmp + ((v.p-p).rotleft().trunc(h));</span><br><span class="line">        p2 = tmp + ((v.p-p).rotright().trunc(h));</span><br><span class="line">        if (rel==2 || rel ==4)</span><br><span class="line">            return 1;</span><br><span class="line">        return 2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int pointcorssline(Line v, Point &amp;p1 , Point &amp;p2)</span><br><span class="line">    &#123;</span><br><span class="line">        if (!(*this).relationline(v))   return 0;</span><br><span class="line">        Point a = v.lineprog(p);</span><br><span class="line">        double d = v.dispointtoline(p);</span><br><span class="line">        d = sqrt(r*r-d*d);</span><br><span class="line">        if (sgn(d)==0)</span><br><span class="line">        &#123;</span><br><span class="line">            p1 = a;</span><br><span class="line">            p2 = a;</span><br><span class="line">            return 1;</span><br><span class="line">        &#125;</span><br><span class="line">        p1 = a + (v.e-v.s).trunc(d);</span><br><span class="line">        p2 = a - (v.e-v.s).trunc(d);</span><br><span class="line">        return 2;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">	int T;</span><br><span class="line">	scanf(&quot;%d&quot;, &amp;T);</span><br><span class="line">	for(int t = 1; t &lt;= T; t++)&#123;</span><br><span class="line">        circle cir;</span><br><span class="line">        cir.input();</span><br><span class="line">        Point points,pointv,pointt;</span><br><span class="line">        points.input();</span><br><span class="line">        pointv.input();</span><br><span class="line">        vx = pointv.x;</span><br><span class="line">        vy = pointv.y;</span><br><span class="line">		pointt.input();</span><br><span class="line"></span><br><span class="line">		Point pointe(points.x+vx,points.y+vy);</span><br><span class="line"></span><br><span class="line">		ok = false;</span><br><span class="line"></span><br><span class="line">		Line linep(points,pointe);  //构造直线</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		bool flag = false;</span><br><span class="line">        Point p,q;</span><br><span class="line">        int res = cir.pointcorssline(linep,p,q);</span><br><span class="line">        if (sgn(px-tx)==0&amp;&amp;sgn(py-ty)==0)</span><br><span class="line">            flag = true;</span><br><span class="line">        else if (res==2 &amp;&amp; sgn(p.x - px) == sgn(vx) &amp;&amp; sgn(p.y - py) == sgn(vy))   // 直线与圆相交</span><br><span class="line">        &#123;</span><br><span class="line"></span><br><span class="line">            double dis1 = p.distance(points);</span><br><span class="line">            double dis2 = q.distance(points);</span><br><span class="line">            if(dis1 &gt; dis2) swap(p,q);</span><br><span class="line">            Line tpl(points,p);</span><br><span class="line">            if (tpl.pointonseg(pointt))</span><br><span class="line">            &#123;</span><br><span class="line">                flag = true;</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                Point symp = Line(cir.p,p).symmetrypoint(points);</span><br><span class="line">                Line reflect(symp,p);</span><br><span class="line">                double nvx = symp.x - p.x , nvy = symp.y - p.y;</span><br><span class="line">                int nrels = reflect.relation(pointt);</span><br><span class="line">                if (nrels==3&amp;&amp;sgn(pointt.x-p.x)==sgn(nvx)&amp;&amp;sgn(pointt.y-p.y)==sgn(nvy))</span><br><span class="line">                &#123;</span><br><span class="line">                    flag = true;</span><br><span class="line">                &#125;</span><br><span class="line">                else</span><br><span class="line">                    flag = false;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        else   //相切 相离 或者未在前进方向上相交</span><br><span class="line">        &#123;</span><br><span class="line">            int rels = linep.relation(pointt);</span><br><span class="line">            if (rels==3&amp;&amp;sgn(pointt.x-points.x)==sgn(vx)&amp;&amp;sgn(pointt.y-points.y)==sgn(vy))// 点在直线上</span><br><span class="line">            &#123;</span><br><span class="line">                flag = true;</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">                flag = false;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">		printf(&quot;Case #%d: &quot;, t);</span><br><span class="line">		if(flag) puts(&quot;Yes&quot;);</span><br><span class="line">		else puts(&quot;No&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/10/10/HDU%205573-Binary%20Tree%20(%E6%9E%84%E9%80%A0)/" rel="prev" title="HDU 5573-Binary Tree (构造)">
+      <i class="fa fa-chevron-left"></i> HDU 5573-Binary Tree (构造)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/10/31/Hdu%203709%20-%20Balanced%20Number/" rel="next" title="Hdu 3709 - Balanced Number">
+      Hdu 3709 - Balanced Number <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jian Sheng</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jian Sheng</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

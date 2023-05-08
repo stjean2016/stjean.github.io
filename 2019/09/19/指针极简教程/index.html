@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"stjean2016.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="指针  指针的定义 指针即地址 0x3d4f | 0x3d50 | 0x3d51 | 0x3d52 —|—|—|—|— 56 | 73 | 48 | 95 上表是一个关于地址和存储空间的举例，每个地址均对应一个存储空间，或者说，计算机中每一个存储空间都有编号，用以表明位置，称为指针。 通常我们所声明的变量，都是储存在一个或多个地址拼合在一起的一块存储空间中。 指针，存放的是一个地址值，不同类型的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="指针极简教程">
+<meta property="og:url" content="https://stjean2016.github.io/2019/09/19/%E6%8C%87%E9%92%88%E6%9E%81%E7%AE%80%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="JS&#39;s Blog">
+<meta property="og:description" content="指针  指针的定义 指针即地址 0x3d4f | 0x3d50 | 0x3d51 | 0x3d52 —|—|—|—|— 56 | 73 | 48 | 95 上表是一个关于地址和存储空间的举例，每个地址均对应一个存储空间，或者说，计算机中每一个存储空间都有编号，用以表明位置，称为指针。 通常我们所声明的变量，都是储存在一个或多个地址拼合在一起的一块存储空间中。 指针，存放的是一个地址值，不同类型的">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-09-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-08T07:56:44.862Z">
+<meta property="article:author" content="Jian Sheng">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://stjean2016.github.io/2019/09/19/%E6%8C%87%E9%92%88%E6%9E%81%E7%AE%80%E6%95%99%E7%A8%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>指针极简教程 | JS's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">JS's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://stjean2016.github.io/2019/09/19/%E6%8C%87%E9%92%88%E6%9E%81%E7%AE%80%E6%95%99%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jian Sheng">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JS's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          指针极简教程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-09-19 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-19T00:00:00+08:00">2019-09-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-05-08 15:56:44" itemprop="dateModified" datetime="2023-05-08T15:56:44+08:00">2023-05-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/%E5%88%B7%E9%A2%98/" itemprop="url" rel="index"><span itemprop="name">刷题</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="指针"><a class="markdownIt-Anchor" href="#指针"></a> 指针</h1>
+<h2 id="指针的定义"><a class="markdownIt-Anchor" href="#指针的定义"></a> 指针的定义</h2>
+<p><strong>指针即地址</strong></p>
+<p>0x3d4f | 0x3d50 | 0x3d51 | 0x3d52<br />
+—|—|—|—|—<br />
+56 | 73 | 48 | 95</p>
+<p>上表是一个关于<strong>地址</strong>和<strong>存储空间</strong>的举例，每个地址均对应一个存储空间，或者说，计算机中每一个存储空间都有编号，用以表明位置，称为指针。</p>
+<p>通常我们所声明的变量，都是储存在一个或多个地址拼合在一起的一块存储空间中。</p>
+<p>指针，存放的是一个地址值，不同类型的变量有不同类型的地址值。</p>
+<h2 id="声明整型指针变量"><a class="markdownIt-Anchor" href="#声明整型指针变量"></a> 声明整型指针变量</h2>
+<h3 id="野指针"><a class="markdownIt-Anchor" href="#野指针"></a> 野指针</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int *p ;</span><br></pre></td></tr></table></figure>
+<p>这样一句代码 ， 就声明了一个int型的指针变量p，由于没有初始化，p此时称为一个<strong>野指针</strong>，对野指针的操作是非常危险的。</p>
+<h3 id="空指针"><a class="markdownIt-Anchor" href="#空指针"></a> 空指针</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int *p = NULL;</span><br></pre></td></tr></table></figure>
+<p>通过这一语句，可以声明一个指向NULL的指针变量p，由于它指向的是NULL，可以认为它不指向任何地址，称为空指针（实际上一般认为指向内存地址0位，由于此地址需要极高权限操作，所以空指针一般是安全的。</p>
+<h3 id="取地址符"><a class="markdownIt-Anchor" href="#取地址符"></a> 取地址符</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int a = 3;</span><br><span class="line">int *p = &amp;a;</span><br></pre></td></tr></table></figure>
+<p>通过这样一部分代码，我们定义了一个有初值的int型指针变量p，它的初值是int型变量a的地址，<strong>&amp;</strong> 符号就是取地址符，可以获得一个变量的地址。</p>
+<p>在p指向变量a的地址后，便可以通过<code>(*p)</code>取得变量p所指向的变量的值，也就是变量a的值，同时对<code>(*p)</code>的任何操作也会直接影响变量a。</p>
+<p>联系C语言中的整型基本读入语句，<code>scanf(&quot;%d&quot;,&amp;a);</code>这即是把从控制台窗口读入的值，写入了变量a的地址中，再加上上方的语句，此时变量p的值就是变量a的地址，所以这句语句也可以这样表达<code>scanf(&quot;%d&quot;,p);</code></p>
+<h2 id="指针的作用"><a class="markdownIt-Anchor" href="#指针的作用"></a> 指针的作用</h2>
+<p>指针最常见的作用就是在参数中传递变量的地址，举例如下</p>
+<h3 id="传值与传地址"><a class="markdownIt-Anchor" href="#传值与传地址"></a> 传值与传地址</h3>
+<h4 id="传值"><a class="markdownIt-Anchor" href="#传值"></a> 传值</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">void Swap(int a, int b)&#123;</span><br><span class="line">    int temp = a;</span><br><span class="line">    a = b;</span><br><span class="line">    b = temp;</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    int x = 5 , y = 7;</span><br><span class="line">    Swap(x,y);</span><br><span class="line">    cout&lt;&lt;x&lt;&lt;&#x27;\t&#x27;&lt;&lt;y&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>函数的功能显然是想要交换形参a与b的值，但这是无法做到的，因为函数的形参变量是<strong>传值</strong>的，即当前的Swap函数相当于只是获得了来自调用处函数的两个整型值(5和7)，并在Swap函数内新声明了变量a和b保存这两个整型值，而不是获得了两个变量(x和y)。</p>
+<h4 id="传地址"><a class="markdownIt-Anchor" href="#传地址"></a> 传地址</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">void Swap(int *a, int *b)&#123;</span><br><span class="line">    int temp = *a;</span><br><span class="line">    *a = *b;</span><br><span class="line">    *b = temp;</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    int x = 5 , y = 7;</span><br><span class="line">    Swap(&amp;x,&amp;y);</span><br><span class="line">    cout&lt;&lt;x&lt;&lt;&#x27;\t&#x27;&lt;&lt;y&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上的程序片段是可以完成交换功能的，函数的参数并不是两个整型变量，而是两个整型指针变量，传入的是两个变量x,y的地址，(*a)与(*b)是直接对变量x,y的地址所存储内容的修改</p>
+<p>举个可能不太恰当的例子，现在有两个瓶子，一个装的是橙汁，一个装的是可乐，需要人来交换他们的内容，上面传值的函数是找来的人又弄来了两个瓶子，里面有一瓶完全一样的橙汁和一瓶完全一样的可乐，并且用第三个瓶子(temp)把他们交换了，而需要交换的两个瓶子并没有发生任何变化。</p>
+<p>但下面传地址的函数找来的人直接找到了这两个瓶子的位置，又拿了一个瓶子(temp)过来，交换了他们的内容，这次，这两个瓶子里的内容成功交换了。</p>
+<h3 id="尝试"><a class="markdownIt-Anchor" href="#尝试"></a> 尝试</h3>
+<p>根据Swap函数，构造一个函数，能够求出传入的两个参数的和，并保存在第一个参数中带回主调函数中</p>
+<h2 id="更多的指针"><a class="markdownIt-Anchor" href="#更多的指针"></a> 更多的指针</h2>
+<h3 id="其他类型变量的指针"><a class="markdownIt-Anchor" href="#其他类型变量的指针"></a> 其他类型变量的指针</h3>
+<p>之前介绍的都是int *型的指针，而C/C++有众多的类型，显然我们知道指针不止此一种，一般某种类型的变量，我们只使用此类型的指针保存它的地址，反例如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">float a = 3.1415926535;</span><br><span class="line">int *p = a;</span><br></pre></td></tr></table></figure>
+<p>此程序段编译时就会报错，如果通过强制类型转换，把代码改为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">float a = 3.1415926535;</span><br><span class="line">int *p = (int *)&amp;a;</span><br></pre></td></tr></table></figure>
+<p>编译便不会报错，但是由于这只是简单的把变量a的地址强制转换成了(int *)类型，地址所存储的二进制码并没有变，所以*p此时的值并不是3，而是1078530011，这其中有一些不可告人的处理转换，详情可以学习整型编码与浮点数编码</p>
+<h3 id="数组的指针"><a class="markdownIt-Anchor" href="#数组的指针"></a> 数组的指针</h3>
+<p>当我们在C/C++内声明一个数组，也就是内存中占用了一段连续的地址，长度为每个单元的长度*数组长度，继续举例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int arry[100];</span><br><span class="line">int *p = arry;</span><br></pre></td></tr></table></figure>
+<p>由上面的程序可以发现，声明的数组名也就是这一段内存的首地址，*p即可访问arry[0]，由于上面说明数组的地址是连续的，所以可想而知<br />
+*(p+1)即可访问arry[1]，(这里的括号不可缺少，由于*的优先级高于加法运算符+，所以需要加上括号，否则相当于(*a)+1这样的一个表达式</p>
+<p><strong>注意</strong> 对于不同的指针类型，+1操作所跳过的地址值不同，如对于(int *)型指针 int * ptr;  ptr+1将指向ptr所对应的地址后第四个位置，即增加了一个int的长度，指向了数组中或内存中下一个int型变量的地址，（由于此操作不管下面四个字节是否保存的是int，都会当做int取出，所以尽量减少对内存位置区域的改变</p>
+<h3 id="指针的数组"><a class="markdownIt-Anchor" href="#指针的数组"></a> 指针的数组</h3>
+<p>与普通数组几乎同理，只是存放的内容是地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int a , b;</span><br><span class="line">int * p[10];</span><br><span class="line">p[0] = &amp;a;</span><br><span class="line">p[1] = &amp;b;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="指针的指针"><a class="markdownIt-Anchor" href="#指针的指针"></a> 指针的指针</h3>
+<p>既然指针变量本身也是一个变量，那么便可以用一个指针指向它，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">int a;</span><br><span class="line">int *x = &amp;a;</span><br><span class="line">int **y = &amp;x;</span><br><span class="line"></span><br><span class="line">int * p[10];</span><br><span class="line">int ** q = p;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>如上例，x是一个指向变量a的指针，y是一个指向int型指针的指针</p>
+<p>而下面的两个语句，由于在上面数组的指针中提到，数组名本身就是一个指向内存中数组所在位置的首地址，所以数组名本身就是一个指针，那么<strong>指针数组的数组名</strong>也就是一个指针的指针，所以不需要取地址符便可以直接赋值给一个 指针的指针变量 q</p>
+<p>另外，关于取地址符的反向操作，对一个地址取内容的操作符 <strong>*</strong>，是根据所给地址值，返回地址处的数据，由于指针的指针是层层指向的，所以对于这样的情况，取出地址中的值也要层层取出，对于上面的程序片段</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int * p[10];</span><br><span class="line">int ** q = p;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>使用 *q可以取出q所指向变量地址处的内容，而q指向一个(int *)的指针，所以得到的还是一个指针(p[0])，再做一个运算才能得到一个int型变量，即**q</p>
+<h3 id="尝试-2"><a class="markdownIt-Anchor" href="#尝试-2"></a> 尝试</h3>
+<h4 id="一维数组"><a class="markdownIt-Anchor" href="#一维数组"></a> 一维数组</h4>
+<p>声明一个一维数组，使用刚刚的方法，用一个指针保存数组的首地址，并用此指针存取数组中的元素</p>
+<h4 id="多维数组"><a class="markdownIt-Anchor" href="#多维数组"></a> 多维数组</h4>
+<p>声明一个多维数组，试着使用指针来存取多维数组的元素</p>
+<h4 id="多维指针数组"><a class="markdownIt-Anchor" href="#多维指针数组"></a> 多维指针数组</h4>
+<p>太复杂了，写出这种的都该判刑！</p>
+<h2 id="申请内存空间"><a class="markdownIt-Anchor" href="#申请内存空间"></a> 申请内存空间</h2>
+<p>调用malloc或new会返回一段在内存中申请的空间的地址，所以需要用一个指针接收</p>
+<p>free对应 malloc申请的空间 ，delete对应 new申请的空间 ， 不可以混用</p>
+<p>free 或 delete 后 ， 要记得把接收地址的指针变量值置为NULL</p>
+<p>C语言 :malloc() ，free()</p>
+<p>C++：new , delete</p>
+<h2 id="扩展应用"><a class="markdownIt-Anchor" href="#扩展应用"></a> 扩展应用</h2>
+<h3 id="链表"><a class="markdownIt-Anchor" href="#链表"></a> 链表</h3>
+<p>用基本的struct构建一个C语言风格的链表，实现链表的创建，删除，插入节点，搜索，[倒置]，（排序）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct Node&#123;</span><br><span class="line">    int data;</span><br><span class="line">    Node* next;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="树二叉树"><a class="markdownIt-Anchor" href="#树二叉树"></a> 树(二叉树)</h3>
+<p>根据二叉树的基本节点，创建一颗具备最基本的二叉树，附加递归等知识，实现二叉树的构建，删除，查找，三序遍历，叶节点计数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct Node&#123;</span><br><span class="line">    int data;</span><br><span class="line">    Node* leftson;</span><br><span class="line">    Node* rightson;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/06/14/Hdu%201904%20LCIS%20(dp)/" rel="prev" title="Hdu 1904 LCIS (dp)">
+      <i class="fa fa-chevron-left"></i> Hdu 1904 LCIS (dp)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/10/10/Hdu%202204%20-%20Eddy's%E7%88%B1%E5%A5%BD%EF%BC%88%E5%AE%B9%E6%96%A5%EF%BC%89/" rel="next" title="Hdu 2204 - Eddy's爱好（容斥）">
+      Hdu 2204 - Eddy's爱好（容斥） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8C%87%E9%92%88"><span class="nav-number">1.</span> <span class="nav-text"> 指针</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text"> 指针的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E%E6%95%B4%E5%9E%8B%E6%8C%87%E9%92%88%E5%8F%98%E9%87%8F"><span class="nav-number">1.2.</span> <span class="nav-text"> 声明整型指针变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8E%E6%8C%87%E9%92%88"><span class="nav-number">1.2.1.</span> <span class="nav-text"> 野指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A9%BA%E6%8C%87%E9%92%88"><span class="nav-number">1.2.2.</span> <span class="nav-text"> 空指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%96%E5%9C%B0%E5%9D%80%E7%AC%A6"><span class="nav-number">1.2.3.</span> <span class="nav-text"> 取地址符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text"> 指针的作用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%A0%E5%80%BC%E4%B8%8E%E4%BC%A0%E5%9C%B0%E5%9D%80"><span class="nav-number">1.3.1.</span> <span class="nav-text"> 传值与传地址</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%A0%E5%80%BC"><span class="nav-number">1.3.1.1.</span> <span class="nav-text"> 传值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%A0%E5%9C%B0%E5%9D%80"><span class="nav-number">1.3.1.2.</span> <span class="nav-text"> 传地址</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%9D%E8%AF%95"><span class="nav-number">1.3.2.</span> <span class="nav-text"> 尝试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E5%A4%9A%E7%9A%84%E6%8C%87%E9%92%88"><span class="nav-number">1.4.</span> <span class="nav-text"> 更多的指针</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E7%B1%BB%E5%9E%8B%E5%8F%98%E9%87%8F%E7%9A%84%E6%8C%87%E9%92%88"><span class="nav-number">1.4.1.</span> <span class="nav-text"> 其他类型变量的指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E6%8C%87%E9%92%88"><span class="nav-number">1.4.2.</span> <span class="nav-text"> 数组的指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E7%9A%84%E6%95%B0%E7%BB%84"><span class="nav-number">1.4.3.</span> <span class="nav-text"> 指针的数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E7%9A%84%E6%8C%87%E9%92%88"><span class="nav-number">1.4.4.</span> <span class="nav-text"> 指针的指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%9D%E8%AF%95-2"><span class="nav-number">1.4.5.</span> <span class="nav-text"> 尝试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E7%BB%B4%E6%95%B0%E7%BB%84"><span class="nav-number">1.4.5.1.</span> <span class="nav-text"> 一维数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E7%BB%B4%E6%95%B0%E7%BB%84"><span class="nav-number">1.4.5.2.</span> <span class="nav-text"> 多维数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E7%BB%B4%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84"><span class="nav-number">1.4.5.3.</span> <span class="nav-text"> 多维指针数组</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%B3%E8%AF%B7%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4"><span class="nav-number">1.5.</span> <span class="nav-text"> 申请内存空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E5%BA%94%E7%94%A8"><span class="nav-number">1.6.</span> <span class="nav-text"> 扩展应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%93%BE%E8%A1%A8"><span class="nav-number">1.6.1.</span> <span class="nav-text"> 链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%91%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="nav-number">1.6.2.</span> <span class="nav-text"> 树(二叉树)</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jian Sheng</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jian Sheng</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

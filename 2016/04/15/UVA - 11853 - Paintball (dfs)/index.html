@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"stjean2016.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="题目链接： https:&#x2F;&#x2F;vjudge.net&#x2F;contest&#x2F;170743#problem&#x2F;E 题目大意： 一个人要从x&#x3D;0,x&#x3D;1000,y&#x3D;1000,y&#x3D;0x&#x3D;0,x&#x3D;1000,y&#x3D;1000,y&#x3D;0x&#x3D;0,x&#x3D;1000,y&#x3D;1000,y&#x3D;0在第一象限包围出的矩形的左侧走到右侧，途中会遇到很多圆，不能走入圆内，求出发点和到达点yyy坐标最大的方案，若不可能输出IMPOSSIBLE 分析： 分">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UVA - 11853 - Paintball (dfs)">
+<meta property="og:url" content="https://stjean2016.github.io/2016/04/15/UVA%20-%2011853%20-%20Paintball%20(dfs)/index.html">
+<meta property="og:site_name" content="JS&#39;s Blog">
+<meta property="og:description" content="题目链接： https:&#x2F;&#x2F;vjudge.net&#x2F;contest&#x2F;170743#problem&#x2F;E 题目大意： 一个人要从x&#x3D;0,x&#x3D;1000,y&#x3D;1000,y&#x3D;0x&#x3D;0,x&#x3D;1000,y&#x3D;1000,y&#x3D;0x&#x3D;0,x&#x3D;1000,y&#x3D;1000,y&#x3D;0在第一象限包围出的矩形的左侧走到右侧，途中会遇到很多圆，不能走入圆内，求出发点和到达点yyy坐标最大的方案，若不可能输出IMPOSSIBLE 分析： 分">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2016-04-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-08T07:56:44.861Z">
+<meta property="article:author" content="Jian Sheng">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://stjean2016.github.io/2016/04/15/UVA%20-%2011853%20-%20Paintball%20(dfs)/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>UVA - 11853 - Paintball (dfs) | JS's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">JS's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://stjean2016.github.io/2016/04/15/UVA%20-%2011853%20-%20Paintball%20(dfs)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jian Sheng">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JS's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          UVA - 11853 - Paintball (dfs)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-04-15 00:00:00" itemprop="dateCreated datePublished" datetime="2016-04-15T00:00:00+08:00">2016-04-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-05-08 15:56:44" itemprop="dateModified" datetime="2023-05-08T15:56:44+08:00">2023-05-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/%E5%88%B7%E9%A2%98/" itemprop="url" rel="index"><span itemprop="name">刷题</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><strong>题目链接：</strong><br />
+<a target="_blank" rel="noopener" href="https://vjudge.net/contest/170743#problem/E">https://vjudge.net/contest/170743#problem/E</a></p>
+<p><strong>题目大意：</strong><br />
+一个人要从<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn><mo separator="true">,</mo><mi>x</mi><mo>=</mo><mn>1000</mn><mo separator="true">,</mo><mi>y</mi><mo>=</mo><mn>1000</mn><mo separator="true">,</mo><mi>y</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x=0,x=1000,y=1000,y=0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8388800000000001em;vertical-align:-0.19444em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8388800000000001em;vertical-align:-0.19444em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8388800000000001em;vertical-align:-0.19444em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span>在第一象限包围出的矩形的左侧走到右侧，途中会遇到很多圆，不能走入圆内，求出发点和到达点<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span>坐标最大的方案，若不可能输出IMPOSSIBLE</p>
+<p><strong>分析：</strong><br />
+分析是否可行比较简单，从接触上边界的圆开始，dfs继续找所有与当前圆相交或者相切的圆，（内含理论上不必包含，但是这里包含并不影响正确性，而且代码逻辑更简单，所以没有特判），若发现接触下边界的圆，则说明不可能。</p>
+<p>实际上这个过程用并查集也可以实现，设计一个up和down数组，表示该集合的最大坐标上界和下界，若两圆相交，则合并两圆的集合，最后<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mi>a</mi><mo stretchy="false">[</mo><mi>i</mi><mo stretchy="false">]</mo><mo>=</mo><mo>=</mo><mi>i</mi></mrow><annotation encoding="application/x-tex">fa[i] == i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord mathnormal">a</span><span class="mopen">[</span><span class="mord mathnormal">i</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span></span><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathnormal">i</span></span></span></span> 的即是根，遍历所有根查找是否上界超出1000且下界低于0，即可判定可行性。</p>
+<p>比较麻烦的是找出<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span>坐标最大的解，实际上，画图可以发现，除了接触上界且接触左右界的圆集合，其他对答案都没有影响，可以通过&quot;绕路&quot;绕过，所以只要在dfs过程中，加上对当前圆与左右界是否相交的判断，然后算出最低交点的位置，与当前起点和终点分别取最小值即可。</p>
+<p><strong>代码：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;stdio.h&gt;</span><br><span class="line">#include&lt;algorithm&gt;</span><br><span class="line">#include&lt;iostream&gt;</span><br><span class="line">#include&lt;string.h&gt;</span><br><span class="line">#include&lt;math.h&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">typedef long long ll;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">double sqr(double x)</span><br><span class="line">&#123;</span><br><span class="line">    return x*x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Point&#123;</span><br><span class="line">    double x,y;</span><br><span class="line">    Point()&#123;&#125;</span><br><span class="line">    Point (double _x,double _y)</span><br><span class="line">    &#123;</span><br><span class="line">        x = _x;</span><br><span class="line">        y = _y;</span><br><span class="line">    &#125;</span><br><span class="line">    void read()</span><br><span class="line">    &#123;</span><br><span class="line">        scanf(&quot;%lf%lf&quot;,&amp;x,&amp;y);</span><br><span class="line">    &#125;</span><br><span class="line">    double distance(Point a)</span><br><span class="line">    &#123;</span><br><span class="line">        return hypot(x-a.x,y-a.y);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct Circle&#123;</span><br><span class="line">    Point p;</span><br><span class="line">    double r;</span><br><span class="line">    Circle()&#123;&#125;</span><br><span class="line">    Circle(double _x,double _y,double _r)</span><br><span class="line">    &#123;</span><br><span class="line">        p = Point(_x,_y);</span><br><span class="line">        r = _r;</span><br><span class="line">    &#125;</span><br><span class="line">    void read()</span><br><span class="line">    &#123;</span><br><span class="line">        p.read();</span><br><span class="line">        scanf(&quot;%lf&quot;,&amp;r);</span><br><span class="line">    &#125;</span><br><span class="line">    bool cross(Circle a)</span><br><span class="line">    &#123;</span><br><span class="line">        double dis = p.distance(a.p);</span><br><span class="line">        return dis&lt;=r+a.r;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;c[1200];</span><br><span class="line"></span><br><span class="line">int n;</span><br><span class="line">int vis[1200];</span><br><span class="line">double a1,a2;</span><br><span class="line"></span><br><span class="line">bool dfs(int k)</span><br><span class="line">&#123;</span><br><span class="line">    //printf(&quot;now dfs(%d)\n&quot;,k);</span><br><span class="line">    //cross left</span><br><span class="line">    if (c[k].p.x&lt;=c[k].r)</span><br><span class="line">    &#123;</span><br><span class="line">        double t = sqrt(sqr(c[k].r)-sqr(c[k].p.x));</span><br><span class="line">        a1 = min(a1,c[k].p.y-t);</span><br><span class="line">    &#125;</span><br><span class="line">    //cross right</span><br><span class="line">    if (1000-c[k].p.x&lt;=c[k].r)</span><br><span class="line">    &#123;</span><br><span class="line">        double t = sqrt(sqr(c[k].r)-sqr(1000-c[k].p.x));</span><br><span class="line">        a2 = min(a2,c[k].p.y-t);</span><br><span class="line">    &#125;</span><br><span class="line">    //cross bottom</span><br><span class="line">    if (c[k].p.y&lt;=c[k].r)</span><br><span class="line">        return false;</span><br><span class="line">    bool res = true;</span><br><span class="line">    for (int i = 1 ; i &lt;= n ; i ++)</span><br><span class="line">    &#123;</span><br><span class="line">        if (!vis[i]&amp;&amp;c[k].cross(c[i]))</span><br><span class="line">        &#123;</span><br><span class="line">            vis[i] = 1;</span><br><span class="line">            if (!dfs(i))</span><br><span class="line">            &#123;</span><br><span class="line">                res = false;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    while (~scanf(&quot;%d&quot;,&amp;n))</span><br><span class="line">    &#123;</span><br><span class="line">        memset(vis,0,sizeof(vis));</span><br><span class="line">        a1 = a2 = 1000.0;</span><br><span class="line"></span><br><span class="line">        for (int i = 1 ; i &lt;= n ; i ++)</span><br><span class="line">        &#123;</span><br><span class="line">            c[i].read();</span><br><span class="line">        &#125;</span><br><span class="line">        int f = 1;</span><br><span class="line">        for (int i = 1 ; i &lt;= n ; i ++)</span><br><span class="line">        &#123;</span><br><span class="line">            if (!vis[i]&amp;&amp;c[i].p.y+c[i].r&gt;=1000.0)</span><br><span class="line">            &#123;</span><br><span class="line">                vis[i] = 1;</span><br><span class="line">                if (!dfs(i))</span><br><span class="line">                &#123;</span><br><span class="line"></span><br><span class="line">                    printf(&quot;IMPOSSIBLE\n&quot;);</span><br><span class="line">                    f = 0;</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (f)</span><br><span class="line">            printf(&quot;%.2f %.2f %.2f %.2f\n&quot;,0.0,a1,1000.0,a2);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/02/12/Hdu%201075%20-%20What%20Are%20You%20Talking%20About%EF%BC%88%E5%AD%97%E5%85%B8%E6%A0%91%EF%BC%89/" rel="prev" title="Hdu 1075 - What Are You Talking About（字典树）">
+      <i class="fa fa-chevron-left"></i> Hdu 1075 - What Are You Talking About（字典树）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/04/25/POJ%202116%20Death%20to%20Binary_%EF%BC%88%E6%A8%A1%E6%8B%9F%E9%A2%98%EF%BC%89/" rel="next" title="POJ 2116 Death to Binary_（模拟题）">
+      POJ 2116 Death to Binary_（模拟题） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jian Sheng</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jian Sheng</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
